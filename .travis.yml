@@ -1,15 +1,10 @@
 deploy:
-# 외부 서비스 표시
   provider: elasticbeanstalk
-# EB 접속하여 직접 확인
   region: "ap-northeast-2"
   app: "todolist-app"
   env: "TodolistApp-env"
-# Traivs CI에서 EB로 이미지 전송 시 S3를 거쳐가므로
-# S3의 bucket을 작성
   bucket_name: elasticbeanstalk-ap-northeast-2-297348835951
-  bucket_path: "todolist-app"
-# master branch에 psuh할 때만 배포 실행  
+  bucket_path: "todolist-app" 
 	on:
     branch: master
 
