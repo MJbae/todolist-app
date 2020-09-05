@@ -21,6 +21,7 @@ after_success:
   - docker push gentlemj/docker-client
   - docker push gentlemj/docker-server
   - docker push gentlemj/docker-nginx
+
 deploy:
   provider: elasticbeanstalk
   region: "ap-northeast-2"
