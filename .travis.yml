@@ -1,34 +1,16 @@
-language: generic
-
-sudo: required
-
-services:
-  - docker
-
-before_install:
-  - docker build -t gentlemj/todolist-app -f ./client/Dockerfile.dev ./client
-
-script:
-  - docker run -e CI=true gentlemj/todolist-app npm run test
-
-after_success:
-  - docker build -t gentlemj/docker-client ./client
-  - docker build -t gentlemj/docker-server ./server
-  - docker build -t gentlemj/docker-nginx ./nginx
-
-  - echo "$DOCKER_HUB_PASSWORD" | docker login -u "$DOCKER_HUB_ID" --password-stdin
-
-  - docker push gentlemj/docker-client
-  - docker push gentlemj/docker-server
-  - docker push gentlemj/docker-nginx
 deploy:
+# 외부 서비스 표시
   provider: elasticbeanstalk
+# EB 접속하여 직접 확인
   region: "ap-northeast-2"
   app: "todolist-app"
   env: "TodolistApp-env"
+# Traivs CI에서 EB로 이미지 전송 시 S3를 거쳐가므로
+# S3의 bucket을 작성
   bucket_name: elasticbeanstalk-ap-northeast-2-297348835951
   bucket_path: "todolist-app"
-  on:
+# master branch에 psuh할 때만 배포 실행  
+	on:
     branch: master
 
   access_key_id: $AWS_ACCESS_KEY
